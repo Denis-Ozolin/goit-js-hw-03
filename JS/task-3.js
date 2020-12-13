@@ -1,15 +1,10 @@
 const findBestEmployee = function (employees) {
-    let BestEmployee = 0;
     for (const employe in employees) {
-        if (employees[employe] > BestEmployee) {
-            BestEmployee = employees[employe];
-        }
-        if (BestEmployee === employees[employe]) {
-            return employe;
-       }
+      if (employees[employe] === Math.max(...Object.values(employees))) {
+        return employe;
     }
-  
-};
+  };
+}
 
 /*
  * Вызовы функции для проверки работоспособности твоей реализации.

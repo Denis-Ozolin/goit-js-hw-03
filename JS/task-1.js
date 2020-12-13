@@ -16,5 +16,3 @@ for (const key of keys) {
 }
 
 
-// console.log(user)
-
