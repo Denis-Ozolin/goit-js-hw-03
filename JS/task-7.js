@@ -1,71 +1,101 @@
-/*
- * Типов транзацкий всего два.
- * Можно положить либо снять деньги со счета.
- */
 const Transaction = {
   DEPOSIT: 'deposit',
   WITHDRAW: 'withdraw',
 };
 
-/*
- * Каждая транзакция это объект со свойствами: id, type и amount
- */
+
+let id = 0;
+const getId = () => id += 666;
+
 
 const account = {
-  // Текущий баланс счета
   balance: 0,
-
-  // История транзакций
   transactions: [],
 
-  /*
-   * Метод создает и возвращает объект транзакции.
-   * Принимает сумму и тип транзакции.
-   */
+
   createTransaction(amount, type) {
-    
+      return {
+      id: getId(),
+        amount,
+        type,
+    }
   },
 
-  /*
-   * Метод отвечающий за добавление суммы к балансу.
-   * Принимает сумму танзакции.
-   * Вызывает createTransaction для создания объекта транзакции
-   * после чего добавляет его в историю транзакций
-   */
+
   deposit(amount) {
-    this.balance += amount;
-   
+    if (typeof amount === null || amount <= 0) {
+      console.log('Неверные данные');
+      return;
+  }
+    const transaction = this.createTransaction(amount, Transaction.DEPOSIT);
+    this.transactions.push(transaction);
+    return this.balance += amount;
   },
 
-  /*
-   * Метод отвечающий за снятие суммы с баланса.
-   * Принимает сумму танзакции.
-   * Вызывает createTransaction для создания объекта транзакции
-   * после чего добавляет его в историю транзакций.
-   *
-   * Если amount больше чем текущий баланс, выводи сообщение
-   * о том, что снятие такой суммы не возможно, недостаточно средств.
-   */
+
   withdraw(amount) {
-     this.balance -= amount;
-   
-  },
+    if (typeof amount === null || amount <= 0) {
+      console.log('Неверные данные');
+      return; 
+    }
 
-  /*
-   * Метод возвращает текущий баланс
-   */
+   if (amount > this.balance) {
+     console.log('Снятие такой суммы невозможно, недостаточно средств.');
+     return;
+    } 
+
+    const transaction = this.createTransaction(amount, Transaction.WITHDRAW);
+    this.transactions.push(transaction);
+    return this.balance -= amount;
+},
+
+
   getBalance() {
-     return this.balance;
+     return console.log(this.balance);
   },
 
-  /*
-   * Метод ищет и возвращает объект транзации по id
-   */
-  getTransactionDetails(id) {},
 
-  /*
-   * Метод возвращает количество средств
-   * определенного типа транзакции из всей истории транзакций
-   */
-  getTransactionTotal(type) {},
+  getTransactionDetails(id) {
+    for (const transaction of this.transactions) {
+      if (id === transaction.id) {
+        return transaction;
+      } else {
+        console.log('Неверный ID')
+        return;
+      }
+    } 
+  },
+
+  
+  getTransactionTotal(type) {
+    let totalTransactions = 0;
+    for (const transaction of this.transactions) {
+      if (transaction.type === type) {
+        totalTransactions += transaction.amount;
+      }
+    }
+    return console.log(totalTransactions);
+  },
+
 };
+
+account.getBalance();
+
+account.deposit(0);
+account.deposit(1000);
+
+account.withdraw(1600); 
+account.withdraw(600);
+account.withdraw(-45);
+
+account.deposit(1100);
+
+account.getBalance();
+
+account.getTransactionTotal(Transaction.DEPOSIT);
+account.getTransactionTotal(Transaction.WITHDRAW);
+
+console.log(account.transactions);
+
+const transactionId = account.transactions[0].id;
+console.log(account.getTransactionDetails(transactionId));

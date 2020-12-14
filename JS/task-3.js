@@ -1,3 +1,9 @@
+
+// Если есть вариант какой то по проще, напишите пожалуйста,
+// долго с этим просидел...
+// И еще подскажите пожалуйста по чему ВСкод подчеркивает
+// как будто это ошибки keys, values, entries в методе Object.***();
+
 const findBestEmployee = function (employees) {
     for (const employe in employees) {
       if (employees[employe] === Math.max(...Object.values(employees))) {
